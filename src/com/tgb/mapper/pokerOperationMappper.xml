@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.tgb.mapper.PokerOperation">
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id"
+		parameterType="PokerOperation">
+		insert into
+		poker_operation(serial_no,room_no,user_id,is_show,is_compare,compare_user_id,
+		is_continue,multiple,money,total_money,send_time,poker_record_id)
+		values(#{serial_no},#{room_no},#{user_id},#{is_show},#{is_compare},#{compare_user_id},
+		#{is_continue},#{multiple},#{money},#{total_money},#{send_time},#{poker_record_id})
+	</insert>
+
+	<update id="update" parameterType="PokerOperation">
+		update poker_operation
+		set
+		serial_no=#{serial_no},
+		room_no=#{room_no},
+		user_id=#{user_id},
+		is_show=#{is_show},
+		is_compare=#{is_compare},
+		compare_user_id=#{compare_user_id}，
+		is_continue = #{is_continue},
+		multiple = #{multiple},
+		money = #{money},
+		total_money = #{total_money},
+		send_time = #{send_time},
+		where id=#{id}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from poker_operation where
+		id=#{id}
+	</delete>
+
+	<!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
+	<select id="findById" parameterType="int" resultType="PokerOperation">
+		select *
+		from poker_operation where id=#{id}
+	</select>
+
+	<select id="findAll" resultType="User">
+		select * from poker_operation
+	</select>
+
+	<select id="getRoomSumMoney"  resultType="int">
+		select sum(total_money) from poker_operation
+		where poker_record_id = #{poker_record_id}  and room_no = #{room_no}
+	</select>
+	
+	<select id="getUserSumMoney"  resultType="int">
+		select sum(total_money) from poker_operation
+		where poker_record_id = #{poker_record_id} 
+	    and room_no = #{room_no}
+	    and user_id = #{user_id}
+	</select>
+	
+	<select id="getLastMultiple"  resultType="int">
+		select top 1 multiple from poker_operation
+		where poker_record_id = #{poker_record_id} 
+	    and room_no = #{room_no}
+	    and user_id = #{user_id}
+	    order by id desc
+	</select>
+	
+	<select id="findLast"  resultType="PokerOperation">
+		select top 1 * from poker_operation
+		where poker_record_id = #{poker_record_id} 
+	    and room_no = #{room_no}
+	    and user_id = #{user_id}
+	    order by id desc
+	</select>
+</mapper>

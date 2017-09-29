@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.tgb.mapper.PokerRecord">
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id"
+		parameterType="PokerRecord">
+		insert into
+		poker_record(serial_no,room_no,user_id,is_win,money,beginTime,endTime,pokers)
+		values(#{serial_no},#{room_no},#{user_id},#{is_win},#{money},#{beginTime},#{endTime},#{pokers})
+	</insert>
+
+	<update id="update" parameterType="PokerRecord">
+		update poker_record
+		set serial_no=#{serial_no},
+		room_no=#{room_no},
+		user_id=#{user_id},
+		money=#{money},
+		beginTime=#{beginTime},
+		endTime=#{endTime}，
+		pokers =
+		#{pokers}
+		where id=#{id}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from poker_record where
+		id=#{id}
+	</delete>
+
+	<!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
+	<select id="findById" parameterType="int" resultType="PokerRecord">
+		select *
+		from poker_record where id=#{id}
+	</select>
+
+	<select id="findAll" resultType="PokerRecord">
+		select * from poker_record
+	</select>
+
+	<select id="getMoney" parameterType="int" resultType="int">
+		select
+		money from users
+		where room_no = #{room_no} and endTime is null
+		order by id desc
+	</select>
+</mapper>
