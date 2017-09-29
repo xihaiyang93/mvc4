@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：必须与对应的接口全类名一致 id:必须与对应接口的某个对应的方法名一致 -->
+<mapper namespace="com.tgb.mapper.UserMapper">
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id"
+		parameterType="User">
+		insert into
+		users(user_name,user_password,real_name,money,mobile,create_time)
+		values(#{user_name},#{user_password},#{real_name},#{money},#{mobile},#{create_time})
+	</insert>
+
+	<update id="update" parameterType="User">
+		update users
+		set user_name=#{user_name},
+		user_password=#{user_password},
+		real_name=#{real_name},
+		money=#{money},
+		mobile=#{mobile},
+		create_time=#{create_time}
+		where id=#{id}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from users where
+		id=#{id}
+	</delete>
+
+	<!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
+	<select id="findById" parameterType="int" resultType="User">
+		select *
+		from users where id=#{id}
+	</select>
+
+	<select id="findAll" resultType="User">
+		select * from users
+	</select>
+
+	<select id="isExist" parameterType="String" resultType="int">
+		select
+		count(*) from users where user_name = #{user_name}
+	</select>
+
+	<select id="login" resultType="User">
+		select * from users
+		where user_name = #{user_name} and user_password = #{user_password}
+	</select>
+
+</mapper>
